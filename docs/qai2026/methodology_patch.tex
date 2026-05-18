@@ -1,0 +1,40 @@
+% Drop-in methodology text for the Framework section.
+% Suggested placement: after the VQC/HQNN model definitions and before the list of attribution metrics.
+
+\subsection{Saliency Target and Normalization}
+For every attribution method, we first reduce the model output to a scalar explanation target $g(x)$. For the VQC, the target is the expectation-value score
+\begin{equation}
+g(x)=z(x,\theta),
+\end{equation}
+where $x\in\mathbb{R}^{d}$ is the encoded input, $\theta$ denotes trainable quantum parameters, and $z$ is the measured Pauli observable expectation. For the HQNN, the quantum circuit produces expectation features $h_q(x,\theta_q)$ and the classical head produces logits $\ell(x;\theta_q,\theta_c)$. We use
+\begin{equation}
+g_c(x)=\ell_c(x;\theta_q,\theta_c)
+\end{equation}
+for class-specific attributions, where $c$ is either the predicted class or the ground-truth class depending on the diagnostic. For binary Cleveland experiments, this reduces to the single logit before the sigmoid. Probability-based faithfulness curves are computed from the corresponding true-class probability $p_y(x)$.
+
+Given a raw attribution vector $a(x)\in\mathbb{R}^{d}$, we report non-negative feature importance scores
+\begin{equation}
+s_j(x)=|a_j(x)|
+\end{equation}
+and normalize them as
+\begin{equation}
+\tilde{s}_j(x)=
+\frac{s_j(x)}
+{\sum_{k=1}^{d}s_k(x)+\epsilon},
+\end{equation}
+where $\epsilon$ is a small constant used only to avoid division by zero. Global importance is obtained by averaging local scores over the validation or test set:
+\begin{equation}
+\bar{s}_j=\frac{1}{|\mathcal{D}|}\sum_{x\in\mathcal{D}}\tilde{s}_j(x).
+\end{equation}
+
+We quantify attribution concentration using Shannon entropy
+\begin{equation}
+H(\bar{s})=
+-\sum_{j=1}^{d}\bar{s}_j\log(\bar{s}_j+\epsilon),
+\end{equation}
+where lower entropy indicates that the explanation is concentrated on fewer features. We also report an $L_1/L_2$ spread index
+\begin{equation}
+C(s)=
+\frac{\|s\|_1}{\|s\|_2+\epsilon}.
+\end{equation}
+For a single normalized attribution vector, $C(s)$ ranges from $1$ for a one-feature explanation to $\sqrt{d}$ for a uniform explanation; therefore lower values indicate more concentrated explanations. When computed over a saliency matrix, the same ratio is interpreted as a dataset-level spread index.

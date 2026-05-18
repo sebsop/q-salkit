@@ -28,16 +28,34 @@ HQNN Cleveland & Binary & 8 selected & 8 & 80/20 \\
 """,
     "table_hyperparameters.tex": r"""\begin{table*}[t]
 \centering
-\caption{Main training and explanation hyperparameters.}
+\caption{Main model and training hyperparameters.}
 \label{tab:hyperparameters}
-\begin{tabular}{lcccccccc}
+\scriptsize
+\begin{tabular}{@{}lccp{3.0cm}p{1.8cm}cccc@{}}
 \toprule
-Setting & Layers & Encoding & Optimizer & LR & Batch & Epochs/Iters & Shots & Seeds \\
+Setting & Qubits & Trainable quantum params & Encoding/entanglement & Head/loss & Optimizer & LR & Batch & Budget \\
 \midrule
-VQC Iris & 2 & $R_Y$ re-uploading + CNOT ring & SPSA & 0.06 & 24 & 350 iters & exact; 1000 stability & 5 \\
-VQC Cleveland & 2 & $R_X/R_Y$ re-uploading + CZ ladder & SPSA & 0.10 & 32 & 200 iters & exact; 10 stability & 5 \\
-HQNN Iris & 2 trainable blocks & plain/richer $R_Y/R_Z$ & Adam & 0.01 & 8 & 25 epochs & statevector & fixed seed \\
-HQNN Cleveland & 2 trainable blocks & plain/richer $R_Y/R_Z$ & Adam & 0.01 & 8 & 20 epochs & statevector & 5 stability \\
+VQC Iris & 4 & 16 & $R_Y$ re-uploading + CNOT ring & Pauli-$Z$/BCE & SPSA & 0.06 & 24 & 350 iters \\
+VQC Cleveland & 8 & 32 & $R_X/R_Y$ re-uploading + CZ ladder & Pauli-$Z$/BCE & SPSA & 0.10 & 32 & 200 iters \\
+HQNN Iris & 4 & 8 & $R_Y$ or $R_Y/R_Z$ + CX ladder & MLP/Cross-entropy & Adam & 0.01 & 8 & 25 epochs \\
+HQNN Cleveland & 8 & 16 & $R_Y$ or $R_Y/R_Z$ + CX ladder & MLP/BCE-logits & Adam & 0.01 & 8 & 20 epochs \\
+\bottomrule
+\end{tabular}
+\end{table*}
+""",
+    "table_explanation_hyperparameters.tex": r"""\begin{table*}[t]
+\centering
+\caption{Explanation and robustness hyperparameters used for the reported diagnostics.}
+\label{tab:explanation-hyperparameters}
+\scriptsize
+\begin{tabular}{@{}lp{2.2cm}p{2.2cm}p{1.8cm}p{1.9cm}p{1.9cm}c@{}}
+\toprule
+Setting & Saliency target & IG steps/baseline & SmoothGrad & Noise sensitivity & Deletion baseline & Stability seeds \\
+\midrule
+VQC Iris & expectation score $z$ & 25 / mean encoded input & $K=30,\sigma=0.1$ & $K=50,\sigma=0.1$ & mean encoded input & 5 \\
+VQC Cleveland & expectation score $z$ & 25 / mean encoded input & $K=30,\sigma=0.1$ & $K=50,\sigma=0.1$ & mean encoded input & 5 \\
+HQNN Iris & class logit/probability & local gradients & input-gradient noise tests & $\delta=10^{-3}$ sensitivity & zero input & fixed seed \\
+HQNN Cleveland & binary logit/probability & 50 / zero input & $K=30,\sigma=0.1$ & $K=50,\sigma=0.1$ & zero input & 5 \\
 \bottomrule
 \end{tabular}
 \end{table*}
@@ -65,7 +83,7 @@ def main() -> None:
     TABLE_DIR.mkdir(parents=True, exist_ok=True)
     for name, content in TABLES.items():
         path = TABLE_DIR / name
-        path.write_text(content + "\n", encoding="utf-8")
+        path.write_text(content.rstrip() + "\n", encoding="utf-8")
         print(f"Wrote {path.relative_to(ROOT)}")
 
 
