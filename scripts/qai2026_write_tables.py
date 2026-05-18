@@ -48,23 +48,26 @@ HQNN Cleveland & 8 & 16 & $R_Y$ or $R_Y/R_Z$ + CX ladder & MLP/BCE-logits & Adam
 \caption{Explanation and robustness hyperparameters used for the reported diagnostics.}
 \label{tab:explanation-hyperparameters}
 \scriptsize
-\begin{tabular}{@{}lp{2.2cm}p{2.2cm}p{1.8cm}p{1.9cm}p{1.9cm}c@{}}
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{@{}lp{2.2cm}p{2.2cm}p{2.7cm}p{1.8cm}c@{}}
 \toprule
-Setting & Saliency target & IG steps/baseline & SmoothGrad & Noise sensitivity & Deletion baseline & Stability seeds \\
+Setting & Saliency target & IG / baseline & Stochastic diagnostics & Deletion baseline & Seeds \\
 \midrule
-VQC Iris & expectation score $z$ & 25 / mean encoded input & $K=30,\sigma=0.1$ & $K=50,\sigma=0.1$ & mean encoded input & 5 \\
-VQC Cleveland & expectation score $z$ & 25 / mean encoded input & $K=30,\sigma=0.1$ & $K=50,\sigma=0.1$ & mean encoded input & 5 \\
-HQNN Iris & class logit/probability & local gradients & input-gradient noise tests & $\delta=10^{-3}$ sensitivity & zero input & fixed seed \\
-HQNN Cleveland & binary logit/probability & 50 / zero input & $K=30,\sigma=0.1$ & $K=50,\sigma=0.1$ & zero input & 5 \\
+VQC Iris & expectation score $z$ & 25 / mean encoded input & SmoothGrad $K=30,\sigma=0.1$; noise $K=50,\sigma=0.1$ & mean encoded input & 5 \\
+VQC Cleveland & expectation score $z$ & 25 / mean encoded input & SmoothGrad $K=30,\sigma=0.1$; noise $K=50,\sigma=0.1$ & mean encoded input & 5 \\
+HQNN Iris & class logit/probability & local gradients & input-gradient noise tests; $\delta=10^{-3}$ sensitivity & zero input & fixed \\
+HQNN Cleveland & binary logit/probability & 50 / zero input & SmoothGrad $K=30,\sigma=0.1$; noise $K=50,\sigma=0.1$ & zero input & 5 \\
 \bottomrule
 \end{tabular}
 \end{table*}
 """,
-    "table_results_summary.tex": r"""\begin{table}[!t]
+    "table_results_summary.tex": r"""\begin{table*}[!t]
 \centering
 \caption{Summary of predictive and explanation metrics.}
 \label{tab:results-summary}
-\begin{tabular}{lccc}
+\scriptsize
+\setlength{\tabcolsep}{5pt}
+\begin{tabular}{@{}lcp{3.0cm}p{6.0cm}@{}}
 \toprule
 Model & Accuracy & Key stability & Explanation note \\
 \midrule
@@ -74,7 +77,7 @@ HQNN Cleveland plain & 0.8197 & $\rho=0.554$ & sensitivity $=21.21$ \\
 HQNN Cleveland richer & 0.8361 & $\rho=0.613$ & sensitivity $=44.39$ \\
 \bottomrule
 \end{tabular}
-\end{table}
+\end{table*}
 """,
 }
 
