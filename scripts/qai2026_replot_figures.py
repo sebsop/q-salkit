@@ -209,10 +209,10 @@ def draw_cz(ax: plt.Axes, x: float, y_a: float, y_b: float) -> None:
     ax.scatter([x, x], [y_a, y_b], s=24, color="#263238", zorder=5)
 
 
-def draw_wire_labels(ax: plt.Axes, ys: list[float]) -> None:
+def draw_wire_labels(ax: plt.Axes, ys: list[float], wire_end: float = 0.78) -> None:
     for idx, y in enumerate(ys):
         ax.text(0.055, y, f"$q_{idx}$", ha="right", va="center", fontsize=7, color="#263238")
-        ax.plot([0.07, 0.78], [y, y], color="#6f7f86", linewidth=0.75, zorder=1)
+        ax.plot([0.07, wire_end], [y, y], color="#6f7f86", linewidth=0.75, zorder=1)
     ax.text(0.055, 0.25, r"$\vdots$", ha="right", va="center", fontsize=8, color="#455a64")
 
 
@@ -239,54 +239,54 @@ def draw_circuit_panel(
     ax.text(0.05, 0.80, subtitle, ha="left", va="center", fontsize=7, color="#455a64")
 
     ys = [0.65, 0.53, 0.41, 0.29]
-    draw_wire_labels(ax, ys)
-
-    add_box(ax, (0.075, 0.12), 0.15, 0.10, "classical input\n$x \\in \\mathbb{R}^{d}$", "#f9f9f9", fontsize=6)
-    add_arrow(ax, (0.16, 0.22), (0.19, 0.36))
+    draw_wire_labels(ax, ys, wire_end=0.80 if kind == "vqc" else 0.76)
 
     if kind == "vqc":
-        ax.text(0.24, 0.73, "angle encoding", ha="center", va="center", fontsize=7, color="#455a64")
+        ax.text(0.22, 0.73, "angle encoding", ha="center", va="center", fontsize=7, color="#455a64")
+        ax.text(0.22, 0.17, "input features $x_i$", ha="center", va="center", fontsize=6, color="#455a64")
         for idx, y in enumerate(ys):
             label = "$R_Y(x_i)$" if idx % 2 else "$R_X(x_i)$"
-            draw_gate(ax, 0.24, y, 0.092, 0.065, label, "#dcebf2")
+            draw_gate(ax, 0.22, y, 0.092, 0.065, label, "#dcebf2")
 
-        ax.text(0.42, 0.73, "CX/CZ entangler", ha="center", va="center", fontsize=7, color="#455a64")
-        draw_cx(ax, 0.35, ys[0], ys[1])
-        draw_cx(ax, 0.42, ys[1], ys[2])
-        draw_cz(ax, 0.49, ys[2], ys[3])
+        ax.text(0.41, 0.73, "CX/CZ entangler", ha="center", va="center", fontsize=7, color="#455a64")
+        draw_cx(ax, 0.34, ys[0], ys[1])
+        draw_cx(ax, 0.41, ys[1], ys[2])
+        draw_cz(ax, 0.48, ys[2], ys[3])
 
-        ax.text(0.63, 0.73, "trainable block, $L=2$", ha="center", va="center", fontsize=7, color="#455a64")
+        ax.text(0.62, 0.73, "trainable block, $L=2$", ha="center", va="center", fontsize=7, color="#455a64")
         for idx, y in enumerate(ys):
             label = "$R_Y(\\theta)$" if idx % 2 else "$R_Z(\\theta)$"
-            draw_gate(ax, 0.63, y, 0.100, 0.065, label, "#dfeee2")
-        ax.plot([0.56, 0.70], [0.20, 0.20], color="#78909c", linestyle="--", linewidth=0.8)
-        ax.text(0.63, 0.16, "data re-uploading", ha="center", va="center", fontsize=6, color="#455a64")
+            draw_gate(ax, 0.62, y, 0.100, 0.065, label, "#dfeee2")
+        ax.plot([0.55, 0.69], [0.20, 0.20], color="#78909c", linestyle="--", linewidth=0.8)
+        ax.text(0.62, 0.16, "data re-uploading", ha="center", va="center", fontsize=6, color="#455a64")
 
-        draw_gate(ax, 0.76, ys[0], 0.085, 0.060, "$\\langle Z \\rangle$", "#f4ded5")
-        add_arrow(ax, (0.80, ys[0]), (0.82, ys[0]))
-        add_box(ax, (0.82, 0.57), 0.13, 0.17, "score $z$\n$p=(1+z)/2$", "#e7e1ef", fontsize=7)
+        draw_gate(ax, 0.76, ys[0], 0.088, 0.060, "$Z$ readout", "#f4ded5", fontsize=6)
+        add_arrow(ax, (0.802, ys[0]), (0.825, ys[0]))
+        add_box(ax, (0.835, 0.57), 0.12, 0.17, "$z=\\langle Z\\rangle$\n$p=(1+z)/2$", "#e7e1ef", fontsize=7)
     else:
-        ax.text(0.24, 0.73, "angle encoding", ha="center", va="center", fontsize=7, color="#455a64")
+        ax.text(0.20, 0.73, "angle encoding", ha="center", va="center", fontsize=7, color="#455a64")
+        ax.text(0.20, 0.17, "input features $x_i$", ha="center", va="center", fontsize=6, color="#455a64")
         for y in ys:
-            draw_gate(ax, 0.24, y, 0.092, 0.065, "$R_Y/R_Z$", "#dcebf2")
+            draw_gate(ax, 0.20, y, 0.092, 0.065, "$R_Y/R_Z$", "#dcebf2")
 
-        ax.text(0.40, 0.73, "trainable quantum layer", ha="center", va="center", fontsize=7, color="#455a64")
+        ax.text(0.37, 0.73, "trainable quantum layer", ha="center", va="center", fontsize=7, color="#455a64")
         for y in ys:
-            draw_gate(ax, 0.40, y, 0.095, 0.065, "$R_Y(\\theta)$", "#dfeee2")
+            draw_gate(ax, 0.37, y, 0.095, 0.065, "$R_Y(\\theta)$", "#dfeee2")
 
-        ax.text(0.57, 0.73, "CX ladder", ha="center", va="center", fontsize=7, color="#455a64")
-        draw_cx(ax, 0.52, ys[0], ys[1])
-        draw_cx(ax, 0.58, ys[1], ys[2])
-        draw_cx(ax, 0.64, ys[2], ys[3])
+        ax.text(0.54, 0.73, "CX ladder", ha="center", va="center", fontsize=7, color="#455a64")
+        draw_cx(ax, 0.49, ys[0], ys[1])
+        draw_cx(ax, 0.55, ys[1], ys[2])
+        draw_cx(ax, 0.61, ys[2], ys[3])
 
         ax.text(0.70, 0.73, "observables", ha="center", va="center", fontsize=7, color="#455a64")
         for y in ys[:3]:
             draw_gate(ax, 0.70, y, 0.072, 0.058, "$O_r$", "#f4ded5")
-        ax.text(0.735, 0.47, "$h_q(x)$", ha="left", va="center", fontsize=7, color="#263238")
-        add_arrow(ax, (0.74, 0.53), (0.765, 0.53))
-        add_box(ax, (0.775, 0.445), 0.105, 0.19, "classical\nMLP head", "#f4ded5", fontsize=7)
-        add_arrow(ax, (0.88, 0.53), (0.895, 0.53))
-        add_box(ax, (0.905, 0.475), 0.060, 0.12, "logits\nprob.", "#e7e1ef", fontsize=6)
+        add_arrow(ax, (0.735, 0.53), (0.750, 0.53))
+        add_box(ax, (0.750, 0.47), 0.068, 0.12, "$h_q(x)$", "#f9f9f9", fontsize=7)
+        add_arrow(ax, (0.818, 0.53), (0.835, 0.53))
+        add_box(ax, (0.835, 0.445), 0.080, 0.19, "classical\nMLP head", "#f4ded5", fontsize=7)
+        add_arrow(ax, (0.915, 0.53), (0.930, 0.53))
+        add_box(ax, (0.930, 0.475), 0.045, 0.12, "logits", "#e7e1ef", fontsize=6)
 
 
 def plot_circuit_architectures(data: dict, formats: tuple[str, ...]) -> None:
