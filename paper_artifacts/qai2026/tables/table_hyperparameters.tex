@@ -1,0 +1,16 @@
+\begin{table*}[t]
+\centering
+\caption{Main training and explanation hyperparameters.}
+\label{tab:hyperparameters}
+\begin{tabular}{lcccccccc}
+\toprule
+Setting & Layers & Encoding & Optimizer & LR & Batch & Epochs/Iters & Shots & Seeds \\
+\midrule
+VQC Iris & 2 & $R_Y$ re-uploading + CNOT ring & SPSA & 0.06 & 24 & 350 iters & exact; 1000 stability & 5 \\
+VQC Cleveland & 2 & $R_X/R_Y$ re-uploading + CZ ladder & SPSA & 0.10 & 32 & 200 iters & exact; 10 stability & 5 \\
+HQNN Iris & 2 trainable blocks & plain/richer $R_Y/R_Z$ & Adam & 0.01 & 8 & 25 epochs & statevector & fixed seed \\
+HQNN Cleveland & 2 trainable blocks & plain/richer $R_Y/R_Z$ & Adam & 0.01 & 8 & 20 epochs & statevector & 5 stability \\
+\bottomrule
+\end{tabular}
+\end{table*}
+

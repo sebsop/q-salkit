@@ -1,0 +1,16 @@
+\begin{table}[t]
+\centering
+\caption{Summary of predictive and explanation metrics.}
+\label{tab:results-summary}
+\begin{tabular}{lccc}
+\toprule
+Model & Accuracy & Key stability & Explanation note \\
+\midrule
+VQC Iris & 0.9375 & $\rho=[1,1,1,0.8]$ & petal width dominant \\
+VQC Cleveland & 0.7826 & $\rho=0.381$--$0.595$ & AUDC $=0.428$ \\
+HQNN Cleveland plain & 0.8197 & $\rho=0.554$ & sensitivity $=21.21$ \\
+HQNN Cleveland richer & 0.8361 & $\rho=0.613$ & sensitivity $=44.39$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
