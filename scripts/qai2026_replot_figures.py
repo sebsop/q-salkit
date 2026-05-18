@@ -35,14 +35,25 @@ def setup_style(font_size: int) -> None:
             "legend.fontsize": font_size - 1,
             "figure.dpi": 160,
             "savefig.bbox": "tight",
+            "savefig.facecolor": "white",
+            "savefig.edgecolor": "white",
+            "figure.facecolor": "white",
+            "axes.facecolor": "white",
         }
     )
 
 
 def save(fig: plt.Figure, name: str, formats: tuple[str, ...]) -> None:
     FIGURE_DIR.mkdir(parents=True, exist_ok=True)
+    fig.patch.set_facecolor("white")
+    fig.patch.set_alpha(1.0)
     for fmt in formats:
-        kwargs = {}
+        kwargs = {
+            "bbox_inches": "tight",
+            "facecolor": "white",
+            "edgecolor": "white",
+            "transparent": False,
+        }
         if fmt == "pdf":
             kwargs["metadata"] = {
                 "Creator": "q-salkit",

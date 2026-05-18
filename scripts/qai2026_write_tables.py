@@ -10,7 +10,7 @@ TABLE_DIR = ROOT / "paper_artifacts" / "qai2026" / "tables"
 
 
 TABLES = {
-    "table_experimental_setup.tex": r"""\begin{table}[t]
+    "table_experimental_setup.tex": r"""\begin{table}[!t]
 \centering
 \caption{Datasets and model configurations used in the experiments.}
 \label{tab:experimental-setup}
@@ -26,7 +26,7 @@ HQNN Cleveland & Binary & 8 selected & 8 & 80/20 \\
 \end{tabular}
 \end{table}
 """,
-    "table_hyperparameters.tex": r"""\begin{table*}[t]
+    "table_hyperparameters.tex": r"""\begin{table*}[!t]
 \centering
 \caption{Main model and training hyperparameters.}
 \label{tab:hyperparameters}
@@ -43,7 +43,7 @@ HQNN Cleveland & 8 & 16 & $R_Y$ or $R_Y/R_Z$ + CX ladder & MLP/BCE-logits & Adam
 \end{tabular}
 \end{table*}
 """,
-    "table_explanation_hyperparameters.tex": r"""\begin{table*}[t]
+    "table_explanation_hyperparameters.tex": r"""\begin{table*}[!t]
 \centering
 \caption{Explanation and robustness hyperparameters used for the reported diagnostics.}
 \label{tab:explanation-hyperparameters}
@@ -60,7 +60,7 @@ HQNN Cleveland & binary logit/probability & 50 / zero input & $K=30,\sigma=0.1$ 
 \end{tabular}
 \end{table*}
 """,
-    "table_results_summary.tex": r"""\begin{table}[t]
+    "table_results_summary.tex": r"""\begin{table}[!t]
 \centering
 \caption{Summary of predictive and explanation metrics.}
 \label{tab:results-summary}
